@@ -74,7 +74,7 @@
         let databody = ''
 
         //remove extra space 
-        function myTrim(x) {
+        function trimData(x) {
             return x.replace(/^\s+|\s+$/gm, '');
         }
 
@@ -85,7 +85,7 @@
                 // Do something with your data
                 let results = data.split(/\r?\n/)
                 let arrayOne = results.shift();
-                array = sessionStorage.setItem('arrayOne', JSON.stringify(results));
+               let array = localStorage.setItem('arrayOne', JSON.stringify(results));
             });
 
         //fecth data from sources.txt
@@ -95,22 +95,24 @@
                 // Do something with your data
                 let results = data.split(/\r?\n/)
                 let arrayTwo = results.shift();
-                array = sessionStorage.setItem('arrayTwo', JSON.stringify(results));
+               let array = localStorage.setItem('arrayTwo', JSON.stringify(results));
             });
 
 
-
-        let titleArray = JSON.parse(sessionStorage.getItem('arrayOne'))
-        let sourceFileArray = JSON.parse(sessionStorage.getItem('arrayTwo'))
+// stored data in local storage and also trimmed the aource file of white spaces.
+        let titleArray = JSON.parse(localStorage.getItem('arrayOne'))
+        let sourceFileArray = JSON.parse(localStorage.getItem('arrayTwo'))
         let newDataa = sourceFileArray.map((val) => {
-            let item = myTrim(val)
+            let item = trimData(val)
             return item
         })
 
+        //created empty arrays 
         let fuzzyData = [],
             titleData = [],
             sourceFileData = [];
 
+            //matching title.txt with sourceFile.txt  and updatig local storage
         newDataa.forEach((element) => {
             titleArray.forEach((val) => {
                 if (val == element) {
@@ -123,24 +125,22 @@
         })
         localStorage.setItem('filteredData', JSON.stringify(fuzzyData))
 
-        sourceFileArray.forEach((item) => {
-            fuzzyData.forEach((val) => {
-                if (val.body !== item) {
-                    titleData.push(item)
-                }
-            })
+        // sourceFileArray.forEach((item) => {
+        //     fuzzyData.forEach((val) => {
+        //         if (val.body !== item) {
+        //             titleData.push(item)
+        //         }
+        //     })
 
-        })
+        // })
 
-        let dataa = titleData.filter((item, index) => {
-            return titleData.indexOf(item) == index
-        })
-
-        // console.log(titleData);
-        // console.log(dataa);
+        // let dataa = titleData.filter((item, index) => {
+        //     return titleData.indexOf(item) == index
+        // })
 
 
-        const fuzzymatch = () => {
+        // creating auto match function
+        const fuzzyMatch = () => {
             let tableContent = ""
             let data = JSON.parse(localStorage.getItem('filteredData'))
             
@@ -163,12 +163,14 @@
             $('#fuzzyTable > tbody').append(tableContent);
             
             //initialize datatable
-            //$('#fuzzyTable').DataTable();
+            $('#fuzzyTable').DataTable();
 
         }
 
-        fuzzymatch()
+        fuzzyMatch()
 
+        //SECTION 2
+        // creating manual option
         const titleSelect = document.querySelector("#title"),
             sourceFile = document.querySelector("#source-file"),
             btnUgrade = document.querySelector("#btn-ugrade");
@@ -195,7 +197,8 @@
                     data.push(manualData)
                     localStorage.setItem('filteredData', JSON.stringify(data))
                     $('#fuzzyTable tbody').empty();;
-                    fuzzymatch()
+                    // $('#fuzzyTable').DataTable();
+                    fuzzyMatch()
                
             }
 
