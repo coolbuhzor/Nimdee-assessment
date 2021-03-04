@@ -43,13 +43,13 @@
                 <div class="form-group col-md-4 col-sm">
                     <label for="source-file">Source Files</label>
                     <select id="source-file" class="form-control form-control-sm">
-                        <option>select</option>
+                        <option>Select</option>
                     </select>
                 </div>
 
                 <div class="form-group col-md-4 col-sm mt-4">
-                    <button class="btn btn-primary">Upgrade</button>
-                </div>  
+                    <button id="btn-ugrade" class="btn btn-primary">Upgrade</button>
+                </div>
 
             </div>
 
@@ -107,7 +107,9 @@
             return item
         })
 
-        let fuzzyData = [], titleData = [], sourceFileData= [];
+        let fuzzyData = [],
+            titleData = [],
+            sourceFileData = [];
 
         newDataa.forEach((element) => {
             titleArray.forEach((val) => {
@@ -120,30 +122,29 @@
             })
         })
         localStorage.setItem('filteredData', JSON.stringify(fuzzyData))
-        // console.log(fuzzyData);
-        // console.log(titleArray);
 
         sourceFileArray.forEach((item) => {
             fuzzyData.forEach((val) => {
-                if(val.body !== item) {
+                if (val.body !== item) {
                     titleData.push(item)
                 }
             })
-           
+
         })
 
         let dataa = titleData.filter((item, index) => {
             return titleData.indexOf(item) == index
         })
 
-        console.log(titleData);
-        console.log(dataa);
-      
+        // console.log(titleData);
+        // console.log(dataa);
 
-        const fuzzymatch = () => {            
+
+        const fuzzymatch = () => {
             let tableContent = ""
-            let data =  JSON.parse(localStorage.getItem('filteredData'))
-            //let data = fuzzyData
+            let data = JSON.parse(localStorage.getItem('filteredData'))
+            
+            //create tbody with data
             for (let i = 0; i < data.length; i++) {
                 let item = data[i]
                 let row = `<tr>
@@ -157,15 +158,51 @@
                 tableContent += row
 
             }
+
+            //append data to table
             $('#fuzzyTable > tbody').append(tableContent);
-            $('#fuzzyTable').DataTable();
+            
+            //initialize datatable
+            //$('#fuzzyTable').DataTable();
 
         }
 
         fuzzymatch()
 
-        // $('#dataTable > tbody').append(databody);
-        // $('#dataTable').DataTable();
+        const titleSelect = document.querySelector("#title"),
+            sourceFile = document.querySelector("#source-file"),
+            btnUgrade = document.querySelector("#btn-ugrade");
+
+            //load title options
+            titleSelect.innerHTML += titleArray.map((item, index) => {
+                let data =  `<option value="${index + 1}">${item}</option>`
+                return data
+            }).join()
+
+            
+            //load Source file options
+            sourceFile.innerHTML += sourceFileArray.map((item, index) => {
+                let data =  `<option value="${index + 1}">${item}</option>`
+                return data
+            }).join()
+
+            const manualMatch = () => {
+                let manualData = {
+                        title: titleSelect.options[titleSelect.selectedIndex].text,
+                        body: sourceFile.options[sourceFile.selectedIndex].text
+                    }
+                    let data = JSON.parse(localStorage.getItem('filteredData'))
+                    data.push(manualData)
+                    localStorage.setItem('filteredData', JSON.stringify(data))
+                    $('#fuzzyTable tbody').empty();;
+                    fuzzymatch()
+               
+            }
+
+            //ugrade title on click
+            btnUgrade.addEventListener('click', manualMatch)
+
+
     </script>
 </body>
 
