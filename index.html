@@ -196,8 +196,9 @@
                     let data = JSON.parse(localStorage.getItem('filteredData'))
                     data.push(manualData)
                     localStorage.setItem('filteredData', JSON.stringify(data))
-                    $('#fuzzyTable tbody').empty();;
-                    // $('#fuzzyTable').DataTable();
+                    // $('#fuzzyTable ').clear().destroy();
+                    $('#fuzzyTable tbody').empty();
+                    $('#fuzzyTable').DataTable();
                     fuzzyMatch()
                
             }
