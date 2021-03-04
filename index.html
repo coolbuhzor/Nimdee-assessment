@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <!-- data tables css -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+</head>
+
+<body>
+    <div class="container m-5">
+        <h3 class="font-weight-bold mb-5">Fuzzy Match</h3>
+        <table class="table table-striped" id="fuzzyTable">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Select</th>
+                    <th>Titles</th>
+                    <th>Source File</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h3 class="font-weight-bold mt-5 mb-5">Manual Match</h3>
+
+        <div>
+            <div class="row">
+                <div class="form-group col-md-4 col-sm">
+                    <label for="title">Titles</label>
+                    <select id="title" class="form-control form-control-sm">
+                        <option>Select</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4 col-sm">
+                    <label for="source-file">Source Files</label>
+                    <select id="source-file" class="form-control form-control-sm">
+                        <option>select</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4 col-sm mt-4">
+                    <button class="btn btn-primary">Upgrade</button>
+                </div>  
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+    </script>
+
+    <!-- data tables Javascript -->
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="app.js" defer></script>
+    <script>
+        let databody = ''
+
+        //remove extra space 
+        function myTrim(x) {
+            return x.replace(/^\s+|\s+$/gm, '');
+        }
+
+        //fecth data from titles.txt
+        fetch('Titles.txt')
+            .then(response => response.text())
+            .then(data => {
+                // Do something with your data
+                let results = data.split(/\r?\n/)
+                let arrayOne = results.shift();
+                array = sessionStorage.setItem('arrayOne', JSON.stringify(results));
+            });
+
+        //fecth data from sources.txt
+        fetch('Source Files.txt')
+            .then(response => response.text())
+            .then(data => {
+                // Do something with your data
+                let results = data.split(/\r?\n/)
+                let arrayTwo = results.shift();
+                array = sessionStorage.setItem('arrayTwo', JSON.stringify(results));
+            });
+
+
+
+        let titleArray = JSON.parse(sessionStorage.getItem('arrayOne'))
+        let sourceFileArray = JSON.parse(sessionStorage.getItem('arrayTwo'))
+        let newDataa = sourceFileArray.map((val) => {
+            let item = myTrim(val)
+            return item
+        })
+
+        let fuzzyData = [], titleData = [], sourceFileData= [];
+
+        newDataa.forEach((element) => {
+            titleArray.forEach((val) => {
+                if (val == element) {
+                    fuzzyData.push({
+                        title: val,
+                        body: element
+                    })
+                }
+            })
+        })
+        localStorage.setItem('filteredData', JSON.stringify(fuzzyData))
+        // console.log(fuzzyData);
+        // console.log(titleArray);
+
+        sourceFileArray.forEach((item) => {
+            fuzzyData.forEach((val) => {
+                if(val.body !== item) {
+                    titleData.push(item)
+                }
+            })
+           
+        })
+
+        let dataa = titleData.filter((item, index) => {
+            return titleData.indexOf(item) == index
+        })
+
+        console.log(titleData);
+        console.log(dataa);
+      
+
+        const fuzzymatch = () => {            
+            let tableContent = ""
+            let data =  JSON.parse(localStorage.getItem('filteredData'))
+            //let data = fuzzyData
+            for (let i = 0; i < data.length; i++) {
+                let item = data[i]
+                let row = `<tr>
+                                <td  class="text-center">${i + 1}</td>
+                                <td class="text-center"><input type="checkbox" class="form-check-input" ></td>
+                                <td>${item.title}</td>
+                                <td>${item.body}</td>
+                                <td><button class="btn btn-primary">Downgrade</button></td>
+                            </tr>`
+
+                tableContent += row
+
+            }
+            $('#fuzzyTable > tbody').append(tableContent);
+            $('#fuzzyTable').DataTable();
+
+        }
+
+        fuzzymatch()
+
+        // $('#dataTable > tbody').append(databody);
+        // $('#dataTable').DataTable();
+    </script>
+</body>
+
+</html>
