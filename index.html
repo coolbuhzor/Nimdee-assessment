@@ -1,213 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nimdee Assesment Test</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
     <!-- data tables css -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"
+    />
+  </head>
 
-<body>
-    <div class="container m-5">
-        <h3 class="font-weight-bold mb-5">Fuzzy Match</h3>
-        <table class="table table-striped" id="fuzzyTable">
-            <thead>
-                <tr>
-                    <th>S/N</th>
-                    <th>Select</th>
-                    <th>Titles</th>
-                    <th>Source File</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+  <body>
+    <div class="container">
+      <h3 class="font-weight-bold mb-5 mt-3 lead">Fuzzy Match</h3>
+      <table class="table table-striped" id="fuzzyTable">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Select</th>
+            <th>Titles</th>
+            <th>Source File</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-        <h3 class="font-weight-bold mt-5 mb-5">Manual Match</h3>
+      <h3 class="font-weight-bold mt-5 mb-5 lead">Manual Match</h3>
 
-        <div>
-            <div class="row">
-                <div class="form-group col-md-4 col-sm">
-                    <label for="title">Titles</label>
-                    <select id="title" class="form-control form-control-sm">
-                        <option>Select</option>
-                    </select>
-                </div>
+      <div>
+        <div class="row">
+          <div class="form-group col-md-4 col-sm">
+            <label for="title">Titles</label>
+            <select id="title" class="form-control form-control-sm">
+              <option>Select</option>
+            </select>
+          </div>
 
-                <div class="form-group col-md-4 col-sm">
-                    <label for="source-file">Source Files</label>
-                    <select id="source-file" class="form-control form-control-sm">
-                        <option>Select</option>
-                    </select>
-                </div>
+          <div class="form-group col-md-4 col-sm">
+            <label for="source-file">Source Files</label>
+            <select id="source-file" class="form-control form-control-sm">
+              <option>Select</option>
+            </select>
+          </div>
 
-                <div class="form-group col-md-4 col-sm mt-4">
-                    <button id="btn-ugrade" class="btn btn-primary">Upgrade</button>
-                </div>
-
-            </div>
-
-
-
-
+          <div class="form-group col-md-4 col-sm mt-4">
+            <button id="btn-ugrade" class="btn btn-primary">Upgrade</button>
+          </div>
         </div>
+      </div>
     </div>
+    <!-- scripts -->
 
+    <!-- j-querry  -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
-    </script>
+    <!-- boot strap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- data tables Javascript -->
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+    <!-- vanilla js -->
     <script src="app.js" defer></script>
-    <script>
-        let databody = ''
-
-        //remove extra space 
-        function trimData(x) {
-            return x.replace(/^\s+|\s+$/gm, '');
-        }
-
-        //fecth data from titles.txt
-        fetch('Titles.txt')
-            .then(response => response.text())
-            .then(data => {
-                // Do something with your data
-                let results = data.split(/\r?\n/)
-                let arrayOne = results.shift();
-               let array = localStorage.setItem('arrayOne', JSON.stringify(results));
-            });
-
-        //fecth data from sources.txt
-        fetch('Source Files.txt')
-            .then(response => response.text())
-            .then(data => {
-                // Do something with your data
-                let results = data.split(/\r?\n/)
-                let arrayTwo = results.shift();
-               let array = localStorage.setItem('arrayTwo', JSON.stringify(results));
-            });
-
-
-// stored data in local storage and also trimmed the aource file of white spaces.
-        let titleArray = JSON.parse(localStorage.getItem('arrayOne'))
-        let sourceFileArray = JSON.parse(localStorage.getItem('arrayTwo'))
-        let newDataa = sourceFileArray.map((val) => {
-            let item = trimData(val)
-            return item
-        })
-
-        //created empty arrays 
-        let fuzzyData = [],
-            titleData = [],
-            sourceFileData = [];
-
-            //matching title.txt with sourceFile.txt  and updatig local storage
-        newDataa.forEach((element) => {
-            titleArray.forEach((val) => {
-                if (val == element) {
-                    fuzzyData.push({
-                        title: val,
-                        body: element
-                    })
-                }
-            })
-        })
-        localStorage.setItem('filteredData', JSON.stringify(fuzzyData))
-
-        // sourceFileArray.forEach((item) => {
-        //     fuzzyData.forEach((val) => {
-        //         if (val.body !== item) {
-        //             titleData.push(item)
-        //         }
-        //     })
-
-        // })
-
-        // let dataa = titleData.filter((item, index) => {
-        //     return titleData.indexOf(item) == index
-        // })
-
-
-        // creating auto match function
-        const fuzzyMatch = () => {
-            let tableContent = ""
-            let data = JSON.parse(localStorage.getItem('filteredData'))
-            
-            //create tbody with data
-            for (let i = 0; i < data.length; i++) {
-                let item = data[i]
-                let row = `<tr>
-                                <td  class="text-center">${i + 1}</td>
-                                <td class="text-center"><input type="checkbox" class="form-check-input" ></td>
-                                <td>${item.title}</td>
-                                <td>${item.body}</td>
-                                <td><button class="btn btn-primary">Downgrade</button></td>
-                            </tr>`
-
-                tableContent += row
-
-            }
-
-            //append data to table
-            $('#fuzzyTable > tbody').append(tableContent);
-            
-            //initialize datatable
-            $('#fuzzyTable').DataTable();
-
-        }
-
-        fuzzyMatch()
-
-        //SECTION 2
-        // creating manual option
-        const titleSelect = document.querySelector("#title"),
-            sourceFile = document.querySelector("#source-file"),
-            btnUgrade = document.querySelector("#btn-ugrade");
-
-            //load title options
-            titleSelect.innerHTML += titleArray.map((item, index) => {
-                let data =  `<option value="${index + 1}">${item}</option>`
-                return data
-            }).join()
-
-            
-            //load Source file options
-            sourceFile.innerHTML += sourceFileArray.map((item, index) => {
-                let data =  `<option value="${index + 1}">${item}</option>`
-                return data
-            }).join()
-
-            const manualMatch = () => {
-                let manualData = {
-                        title: titleSelect.options[titleSelect.selectedIndex].text,
-                        body: sourceFile.options[sourceFile.selectedIndex].text
-                    }
-                    let data = JSON.parse(localStorage.getItem('filteredData'))
-                    data.push(manualData)
-                    localStorage.setItem('filteredData', JSON.stringify(data))
-                    // $('#fuzzyTable ').clear().destroy();
-                    $('#fuzzyTable tbody').empty();
-                    $('#fuzzyTable').DataTable();
-                    fuzzyMatch()
-               
-            }
-
-            //ugrade title on click
-            btnUgrade.addEventListener('click', manualMatch)
-
-
-    </script>
-</body>
-
+  </body>
 </html>

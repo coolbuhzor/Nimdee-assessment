@@ -1,0 +1,12 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.lead {
+  color: #0275d8;
+  font-size: 3rem;
+  text-align: center;
+}
